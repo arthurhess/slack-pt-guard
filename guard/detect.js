@@ -10,7 +10,7 @@
     "não nao você voce vocês voces vc vcs está esta estou estamos estão estao estava " +
     "isso isto essa esse essas esses aquele aquela aquilo também tambem tb tbm " +
     "obrigado obrigada valeu tá tô dá lá aí daí né pra pq porque porquê então entao " +
-    "aqui agora ainda já muito muita muitos muitas bem bom boa oi olá ola tudo nada " +
+    "aqui agora ainda já muito muita muitos muitas bem bom boa oi olá ola tudo " +
     "gente que quê quem qual quais quando onde como com sobre depois antes hoje " +
     "amanhã amanha ontem vou vai vamos vão fazer faz fiz feito tem tenho temos ter ser " +
     "foi sou são é eles elas ele ela nós meu minha seu sua dele dela nosso nossa " +
@@ -18,7 +18,7 @@
     "quero queria beleza blz viu deu coisa coisas tipo dia novo nova uma umas uns " +
     "num numa dos das nas pelo pela pelos pelas ao aos à às mas para até ate cadê cade " +
     "certeza claro galera pessoal tranquilo por favor manda mandar mandei olha alguém " +
-    "consegui conseguiu vamo bora entendi beleza"
+    "consegui conseguiu vamo bora entendi tchau"
   ).split(/\s+/));
 
   // Function words shared with other languages: only count once a strong signal exists.

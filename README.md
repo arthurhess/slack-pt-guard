@@ -6,7 +6,20 @@ If you write Portuguese all day and also sit in an English-only Slack workspace,
 
 > This looks like Portuguese: “vou ver isso amanhã” — Send anyway?
 
-> **Status: work in progress.** The detector and in-page guard work; the macOS launcher is being written.
+> **Status: work in progress.** Not yet tested end to end.
+
+## Setup
+
+Needs macOS, the Slack desktop app in `/Applications`, and Xcode Command Line Tools (`xcode-select --install`).
+
+```sh
+git clone https://github.com/arthurhess/slack-pt-guard && cd slack-pt-guard
+./install.sh
+```
+
+This builds **English Slack** from the source you just cloned, puts it in `~/Applications` and opens it. Sign in to your English workspace there, and sign out of it in your regular Slack. Open English Slack from now on to use that workspace.
+
+Uninstall with `./install.sh --uninstall`, which removes the app and its Slack profile and gives `slack://` links back to the regular Slack app.
 
 ## How it works
 
@@ -38,6 +51,7 @@ Chromium refuses debugging on Slack's normal profile, which is why the guarded c
 | `guard/guard.js` | In-page guard: catches Enter / Send, asks to confirm |
 | `app/main.swift` | Launcher: starts Slack over a private pipe, injects the guard, handles `slack://` links |
 | `app/Info.plist` | App bundle metadata |
+| `install.sh` | Builds, installs and opens the app; `--uninstall` removes it |
 
 ## Tests
 

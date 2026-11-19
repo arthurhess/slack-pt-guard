@@ -4,11 +4,11 @@
 (function () {
   "use strict";
   if (window.__ptGuard) return;
-  window.__ptGuard = { version: 1 };
+  window.__ptGuard = true;
 
   const COMPOSER = '[data-qa="texty_input"]';
   const SEND = '[data-qa="texty_send_button"]';
-  const AUTOCOMPLETE = '[data-qa*="autocomplete"], .c-texty_autocomplete, [role="listbox"]';
+  const AUTOCOMPLETE = '[role="listbox"]'; // emoji / @mention suggestions
 
   const visible = (el) => el && el.getClientRects().length > 0;
   const autocompleteOpen = () => [...document.querySelectorAll(AUTOCOMPLETE)].some(visible);

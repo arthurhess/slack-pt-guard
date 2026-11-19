@@ -47,6 +47,8 @@ const ENGLISH = [
   "",
   "Our new product launch is on track",
   "Let's sync on the data model",
+  "nada",
+  "zip, nada, zilch",
 ];
 
 for (const s of PORTUGUESE) test(`pt: ${JSON.stringify(s)}`, () => {
