@@ -1,8 +1,8 @@
 #!/bin/sh
-# Builds "English Slack.app" from this folder's source, installs it to
-# ~/Applications and opens it. Nothing is downloaded.
+# Builds "English Slack.app" from this folder's source and installs it to
+# ~/Applications. Nothing is downloaded.
 #
-#   ./install.sh              build, install, open
+#   ./install.sh              build and install
 #   ./install.sh --uninstall  remove the app and its Slack profile
 #
 # Requires Xcode Command Line Tools (xcode-select --install).
@@ -35,4 +35,3 @@ mkdir -p "$HOME/Applications"
 rm -rf "$APP"
 cp -R "$BUILD" "$APP"
 echo "Installed $APP"
-open "$APP"

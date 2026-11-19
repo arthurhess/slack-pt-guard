@@ -17,7 +17,7 @@ git clone https://github.com/arthurhess/slack-pt-guard && cd slack-pt-guard
 ./install.sh
 ```
 
-This builds **English Slack** from the source you just cloned, puts it in `~/Applications` and opens it. Sign in to your English workspace there, and sign out of it in your regular Slack. Open English Slack from now on to use that workspace.
+This builds **English Slack** from the source you just cloned and puts it in `~/Applications` (your personal Applications folder). Open it from there or with Spotlight, sign in to your English workspace there, and sign out of it in your regular Slack. Open English Slack from now on to use that workspace.
 
 Uninstall with `./install.sh --uninstall`, which removes the app and its Slack profile and gives `slack://` links back to the regular Slack app.
 
