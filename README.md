@@ -21,7 +21,15 @@ Uninstall: `./install.sh --uninstall`
 
 English Slack is a second copy of Slack with its own profile. When you press Enter or click Send, it checks the message and asks for confirmation if it looks Portuguese. Your regular Slack is untouched.
 
-It has no network code, needs no macOS permissions and opens no debugging port: the guard is added through a private pipe only the launcher holds.
+## What it can and can't access
+
+| | |
+|---|---|
+| Network | None. No code in this repo opens a connection. |
+| macOS permissions | None. No Accessibility, Input Monitoring or Automation. |
+| Debugging port | None. Slack is started with `--remote-debugging-pipe`: an anonymous pipe only the launcher holds. |
+| What it reads | The text of the message box, only at the moment you send, only in English Slack. |
+| What it stores | Nothing besides English Slack's own profile folder. |
 
 ## Files
 
