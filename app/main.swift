@@ -4,7 +4,8 @@
 // --remote-debugging-pipe, so the DevTools protocol runs over an anonymous pipe
 // that only this process holds: no TCP port, nothing other programs can reach.
 // Over that pipe it injects guard.bundle.js (detect.js + guard.js) into every
-// slack.com page. It also handles slack:// links by handing them to that copy.
+// Slack window; the guard only switches on for slack.com pages. It also handles
+// slack:// links by handing them to that copy.
 //
 // It never opens a network connection, never reads or sends messages itself, and
 // needs no macOS permissions (no Accessibility, Input Monitoring or Automation).
@@ -116,7 +117,6 @@ final class CDP {
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     var cdp: CDP?
-    var seenTargets = Set<String>()
     var pendingURLs: [String] = []
     var guardInjected = false
     lazy var guardSource: String = {
@@ -167,31 +167,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         cdp.start()
         self.cdp = cdp
-        cdp.send("Target.setDiscoverTargets", ["discover": true])
+        // Attach to every window as it is created, paused before it loads anything,
+        // so the guard is registered before Slack's page can start. No race.
+        cdp.send("Target.setAutoAttach", ["autoAttach": true, "waitForDebuggerOnStart": true, "flatten": true])
     }
 
     func handleEvent(_ method: String, _ params: [String: Any], _ session: String?) {
-        switch method {
-        case "Target.targetCreated", "Target.targetInfoChanged":
-            // Pages start as about:blank and report their real URL in targetInfoChanged.
-            guard let info = params["targetInfo"] as? [String: Any],
-                  info["type"] as? String == "page",
-                  let id = info["targetId"] as? String,
-                  let host = URL(string: info["url"] as? String ?? "")?.host,
-                  host == "slack.com" || host.hasSuffix(".slack.com"),
-                  seenTargets.insert(id).inserted else { return }
-            cdp?.send("Target.attachToTarget", ["targetId": id, "flatten": true])
-        case "Target.attachedToTarget":
-            guard let sid = params["sessionId"] as? String else { return }
-            // Future page loads in this tab, then the page as it is now.
+        guard method == "Target.attachedToTarget",
+              let sid = params["sessionId"] as? String,
+              let info = params["targetInfo"] as? [String: Any] else { return }
+        if info["type"] as? String == "page" {
+            // Every future page load in this window, then the page as it is now.
+            // guard.js itself does nothing outside slack.com.
+            // Page.enable is required: without it Slack ignores the script on new pages.
+            cdp?.send("Page.enable", session: sid)
             cdp?.send("Page.addScriptToEvaluateOnNewDocument", ["source": guardSource], session: sid)
             cdp?.send("Runtime.evaluate", ["expression": guardSource], session: sid)
             log("guard injected")
             guardInjected = true
             flushURLs()
-        default:
-            break
         }
+        // Let the window (or worker) continue loading.
+        cdp?.send("Runtime.runIfWaitingForDebugger", session: sid)
     }
 
     // MARK: slack:// links

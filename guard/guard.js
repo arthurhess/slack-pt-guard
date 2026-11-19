@@ -3,6 +3,7 @@
 // Fails open: any error lets the message through. No network access.
 (function () {
   "use strict";
+  if (!/(^|\.)slack\.com$/.test(location.hostname)) return; // only Slack's own pages
   if (window.__ptGuard) return;
   window.__ptGuard = true;
 
