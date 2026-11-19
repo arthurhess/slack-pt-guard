@@ -39,8 +39,6 @@ Chromium refuses debugging on Slack's normal profile, which is why the guarded c
 | `app/main.swift` | Launcher: starts Slack over a private pipe, injects the guard, handles `slack://` links |
 | `app/Info.plist` | App bundle metadata |
 
-`dev/` holds small helpers used while developing; they are not part of the app.
-
 ## Tests
 
 ```sh
