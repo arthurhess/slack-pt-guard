@@ -10,7 +10,7 @@ def call(sock, method, params=None, session=None, timeout=30):
 
 def page_session(sock):
     t = call(sock, "Target.getTargets")["result"]["targetInfos"]
-    pages = [x for x in t if x["type"] == "page" and "app.slack.com" in x["url"]]
+    pages = [x for x in t if x["type"] == "page" and "slack.com" in x["url"]]
     return call(sock, "Target.attachToTarget", {"targetId": pages[0]["targetId"], "flatten": True})["result"]["sessionId"]
 
 def ev(sock, js, timeout=30, session=None):
@@ -20,7 +20,9 @@ def ev(sock, js, timeout=30, session=None):
 
 if __name__ == "__main__":
     sock, method = sys.argv[1], sys.argv[2]
-    if method == "js":
+    if method == "nav":
+        print(json.dumps(call(sock, "Page.navigate", {"url": sys.argv[3]}, page_session(sock)), indent=1))
+    elif method == "js":
         print(json.dumps(ev(sock, open(sys.argv[3]).read()), indent=1, ensure_ascii=False))
     else:
         params = json.loads(sys.argv[3]) if len(sys.argv) > 3 else {}
